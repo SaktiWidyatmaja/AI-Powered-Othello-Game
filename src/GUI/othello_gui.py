@@ -1,7 +1,9 @@
 import pygame
 import sys
+from genetic_algorithm import get_best_move_genetic_algo
+from local_search import get_best_move_local_search
 from othello_game import OthelloGame
-from ai_agent import get_best_move
+# from ai_agent import get_best_move
 
 # Constants and colors
 WIDTH, HEIGHT = 480, 560
@@ -143,7 +145,9 @@ class OthelloGUI:
             if self.game.player_mode == "ai" and self.game.current_player == -1:
                 self.message = "AI is thinking..."
                 self.draw_board()  # Display the thinking message
-                ai_move = get_best_move(self.game)
+                ai_move = get_best_move_genetic_algo(self.game)
+                # ai_move = get_best_move_local_search(self.game)
+                # ai_move = get_best_move(self.game)
                 pygame.time.delay(500)  # Wait for a short time to show the message
                 self.game.make_move(*ai_move)
 
