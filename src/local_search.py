@@ -7,7 +7,7 @@ def get_best_move_local_search(game, max_time=5):
     """
     start_time = time.time()
     best_move = None
-    best_score = float('-inf')
+    best_score = evaluate_game_state(game)
 
     valid_moves = game.get_valid_moves()
     if not valid_moves:

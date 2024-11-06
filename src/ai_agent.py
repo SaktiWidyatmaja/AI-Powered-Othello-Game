@@ -1,7 +1,14 @@
 from othello_game import OthelloGame
 
 
-def get_best_move(game, max_depth=8):
+def get_best_move(
+        game, 
+        max_depth=8,
+        coin_parity_weight: float = 1.0,
+        mobility_weight: float = 2.0,
+        corner_occupancy_weight: float = 5.0,
+        stability_weight: float = 3.0,
+        edge_occupancy_weight: float = 2.5):
     """
     Given the current game state, this function returns the best move for the AI player using the Alpha-Beta Pruning
     algorithm with a specified maximum search depth.
@@ -13,12 +20,28 @@ def get_best_move(game, max_depth=8):
     Returns:
         tuple: A tuple containing the evaluation value of the best move and the corresponding move (row, col).
     """
-    _, best_move = alphabeta(game, max_depth)
+    _, best_move = alphabeta(
+        game, 
+        max_depth, 
+        coin_parity_weight,
+        mobility_weight,
+        corner_occupancy_weight,
+        stability_weight,
+        edge_occupancy_weight)
     return best_move
 
 
 def alphabeta(
-    game, max_depth, maximizing_player=True, alpha=float("-inf"), beta=float("inf")
+        game, 
+        max_depth, 
+        maximizing_player=True, 
+        alpha=float("-inf"), 
+        beta=float("inf"),
+        coin_parity_weight: float = 1.0,
+        mobility_weight: float = 2.0,
+        corner_occupancy_weight: float = 5.0,
+        stability_weight: float = 3.0,
+        edge_occupancy_weight: float = 2.5
 ):
     """
     Alpha-Beta Pruning algorithm for selecting the best move for the AI player.
@@ -34,7 +57,14 @@ def alphabeta(
         tuple: A tuple containing the evaluation value of the best move and the corresponding move (row, col).
     """
     if max_depth == 0 or game.is_game_over():
-        return evaluate_game_state(game), None
+        return evaluate_game_state(
+            game,
+            coin_parity_weight,
+            mobility_weight,
+            corner_occupancy_weight,
+            stability_weight,
+            edge_occupancy_weight
+            ), None
 
     valid_moves = game.get_valid_moves()
 
@@ -82,7 +112,13 @@ def alphabeta(
         return min_eval, best_move
 
 
-def evaluate_game_state(game):
+def evaluate_game_state(game: OthelloGame, 
+                        coin_parity_weight: float = 1.0,
+                        mobility_weight: float = 2.0,
+                        corner_occupancy_weight: float = 5.0,
+                        stability_weight: float = 3.0,
+                        edge_occupancy_weight: float = 2.5
+                        ):
     """
     Evaluates the current game state for the AI player.
 
@@ -91,14 +127,12 @@ def evaluate_game_state(game):
 
     Returns:
         float: The evaluation value representing the desirability of the game state for the AI player.
+        coin_parity_weight = default 1.0
+        mobility_weight = default 2.0
+        corner_occupancy_weight = default 5.0
+        stability_weight = default 3.0
+        edge_occupancy_weight = default 2.5
     """
-    # Evaluation weights for different factors
-    coin_parity_weight = 1.0
-    mobility_weight = 2.0
-    corner_occupancy_weight = 5.0
-    stability_weight = 3.0
-    edge_occupancy_weight = 2.5
-
     # Coin parity (difference in disk count)
     player_disk_count = sum(row.count(game.current_player) for row in game.board)
     opponent_disk_count = sum(row.count(-game.current_player) for row in game.board)

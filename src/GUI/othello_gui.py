@@ -153,10 +153,18 @@ class OthelloGUI:
                         ai_move = get_best_move_genetic_algo(self.game)
                     elif (self.game.first_ai == "local_search"):
                         ai_move = get_best_move_local_search(self.game)
-                    elif (self.game.first_ai == "minmax_1"
-                        or self.game.first_ai == "minmax_2"
-                        or self.game.first_ai == "minmax_3"):
-                        ai_move = get_best_move(self.game)
+                    elif (self.game.first_ai == "minmax_1"):
+                        ai_move = get_best_move(self.game, 5)
+                    elif (self.game.first_ai == "minmax_2"):
+                        ai_move = get_best_move(self.game, 5, 
+                                                coin_parity_weight=0.5,
+                                                mobility_weight=3.0,
+                                                corner_occupancy_weight=7.0,
+                                                stability_weight=4.0,
+                                                edge_occupancy_weight=1.5
+                                                )
+                    else: # (self.game.first_ai == "minmax_2"):
+                        ai_move = get_best_move(self.game, 6)
                     pygame.time.delay(500)  # Wait for a short time to show the message
                     self.game.make_move(*ai_move)
             
@@ -169,10 +177,18 @@ class OthelloGUI:
                         first_ai_move = get_best_move_genetic_algo(self.game)
                     elif (self.game.first_ai == "local_search"):
                         first_ai_move = get_best_move_local_search(self.game)
-                    elif (self.game.first_ai == "minmax_1"
-                        or self.game.first_ai == "minmax_2"
-                        or self.game.first_ai == "minmax_3"):
-                        first_ai_move = get_best_move(self.game)
+                    elif (self.game.first_ai == "minmax_1"):
+                        first_ai_move = get_best_move(self.game, 5)
+                    elif (self.game.first_ai == "minmax_2"):
+                        first_ai_move = get_best_move(self.game, 5, 
+                                                coin_parity_weight=0.5,
+                                                mobility_weight=3.0,
+                                                corner_occupancy_weight=7.0,
+                                                stability_weight=4.0,
+                                                edge_occupancy_weight=1.5
+                                                )
+                    else: # (self.game.first_ai == "minmax_2"):
+                        first_ai_move = get_best_move(self.game, 6)
                     pygame.time.delay(500)  # Wait for a short time to show the message
                     self.game.make_move(*first_ai_move)
                 elif self.game.current_player == -1:
@@ -182,10 +198,18 @@ class OthelloGUI:
                         second_ai_move = get_best_move_genetic_algo(self.game)
                     elif (self.game.second_ai == "local_search"):
                         second_ai_move = get_best_move_local_search(self.game)
-                    elif (self.game.second_ai == "minmax_1"
-                        or self.game.second_ai == "minmax_2"
-                        or self.game.second_ai == "minmax_3"):
-                        second_ai_move = get_best_move(self.game)
+                    elif (self.game.first_ai == "minmax_1"):
+                        second_ai_move = get_best_move(self.game, 5)
+                    elif (self.game.first_ai == "minmax_2"):
+                        second_ai_move = get_best_move(self.game, 5, 
+                                                coin_parity_weight=0.5,
+                                                mobility_weight=3.0,
+                                                corner_occupancy_weight=7.0,
+                                                stability_weight=4.0,
+                                                edge_occupancy_weight=1.5
+                                                )
+                    else: # (self.game.first_ai == "minmax_2"):
+                        second_ai_move = get_best_move(self.game, 6)
                     pygame.time.delay(500)  # Wait for a short time to show the message
                     self.game.make_move(*second_ai_move)
 
