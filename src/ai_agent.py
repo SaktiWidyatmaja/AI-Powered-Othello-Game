@@ -4,11 +4,8 @@ from othello_game import OthelloGame
 def get_best_move(
         game, 
         max_depth=8,
-        coin_parity_weight: float = 1.0,
-        mobility_weight: float = 2.0,
-        corner_occupancy_weight: float = 5.0,
-        stability_weight: float = 3.0,
-        edge_occupancy_weight: float = 2.5):
+        alternate_evaluation: bool= False
+        ):
     """
     Given the current game state, this function returns the best move for the AI player using the Alpha-Beta Pruning
     algorithm with a specified maximum search depth.
@@ -23,11 +20,8 @@ def get_best_move(
     _, best_move = alphabeta(
         game, 
         max_depth, 
-        coin_parity_weight,
-        mobility_weight,
-        corner_occupancy_weight,
-        stability_weight,
-        edge_occupancy_weight)
+        alternate_evaluation
+        )
     return best_move
 
 
@@ -37,11 +31,7 @@ def alphabeta(
         maximizing_player=True, 
         alpha=float("-inf"), 
         beta=float("inf"),
-        coin_parity_weight: float = 1.0,
-        mobility_weight: float = 2.0,
-        corner_occupancy_weight: float = 5.0,
-        stability_weight: float = 3.0,
-        edge_occupancy_weight: float = 2.5
+        alternate_evaluation: bool = False,
 ):
     """
     Alpha-Beta Pruning algorithm for selecting the best move for the AI player.
@@ -57,14 +47,14 @@ def alphabeta(
         tuple: A tuple containing the evaluation value of the best move and the corresponding move (row, col).
     """
     if max_depth == 0 or game.is_game_over():
-        return evaluate_game_state(
-            game,
-            coin_parity_weight,
-            mobility_weight,
-            corner_occupancy_weight,
-            stability_weight,
-            edge_occupancy_weight
-            ), None
+        if alternate_evaluation:
+            return evaluate_game_state_alternative(
+                game
+                ), None
+        else:
+            return evaluate_game_state(
+                game
+                ), None
 
     valid_moves = game.get_valid_moves()
 
@@ -169,6 +159,62 @@ def evaluate_game_state(game: OthelloGame,
 
     return evaluation
 
+def evaluate_game_state_alternative(
+        game: OthelloGame,
+        coin_parity_weight: float = 1.5,
+        mobility_weight: float = 2.0,
+        corner_occupancy_weight: float = 6.0,
+        stability_weight: float = 3.5,   
+        edge_occupancy_weight: float = 2.0,
+        center_control_weight: float = 2.0,
+        potential_mobility_weight: float = 1.5
+    ):
+    player_disk_count = sum(row.count(game.current_player) for row in game.board)
+    opponent_disk_count = sum(row.count(-game.current_player) for row in game.board)
+    coin_parity = player_disk_count - opponent_disk_count
+
+    player_valid_moves = len(game.get_valid_moves())
+    opponent_valid_moves = len(
+        OthelloGame(player_mode=-game.current_player).get_valid_moves()
+    )
+    mobility = player_valid_moves - opponent_valid_moves
+
+    corner_occupancy = sum(
+        game.board[i][j] == game.current_player for i, j in [(0, 0), (0, 7), (7, 0), (7, 7)]
+    )
+
+    stability = calculate_stability(game)
+
+    edge_occupancy = sum(game.board[i][j] == game.current_player for i in [0, 7] for j in range(1, 7)) + sum(
+        game.board[i][j] == game.current_player for i in range(1, 7) for j in [0, 7]
+    )
+
+    # Center control (kontrol area tengah)
+    center_control = sum(
+        game.board[i][j] == game.current_player for i in range(2, 6) for j in range(2, 6)
+    )
+
+    # Potential mobility (jumlah posisi di sekitar disk lawan yang kosong)
+    potential_mobility = sum(
+        game.board[i][j] == 0 and any(
+            game.board[i + di][j + dj] == -game.current_player
+            for di in [-1, 0, 1] for dj in [-1, 0, 1]
+            if 0 <= i + di < 8 and 0 <= j + dj < 8
+        )
+        for i in range(8) for j in range(8)
+    )
+
+    evaluation = (
+        coin_parity * coin_parity_weight
+        + mobility * mobility_weight
+        + corner_occupancy * corner_occupancy_weight
+        + stability * stability_weight
+        + edge_occupancy * edge_occupancy_weight
+        + center_control * center_control_weight
+        + potential_mobility * potential_mobility_weight
+    )
+
+    return evaluation
 
 def calculate_stability(game):
     """

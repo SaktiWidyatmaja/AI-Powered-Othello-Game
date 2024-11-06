@@ -156,13 +156,7 @@ class OthelloGUI:
                     elif (self.game.first_ai == "minmax_1"):
                         ai_move = get_best_move(self.game, 5)
                     elif (self.game.first_ai == "minmax_2"):
-                        ai_move = get_best_move(self.game, 5, 
-                                                coin_parity_weight=0.5,
-                                                mobility_weight=3.0,
-                                                corner_occupancy_weight=7.0,
-                                                stability_weight=4.0,
-                                                edge_occupancy_weight=1.5
-                                                )
+                        ai_move = get_best_move(self.game, 5, True)
                     else: # (self.game.first_ai == "minmax_2"):
                         ai_move = get_best_move(self.game, 6)
                     pygame.time.delay(500)  # Wait for a short time to show the message
@@ -180,13 +174,7 @@ class OthelloGUI:
                     elif (self.game.first_ai == "minmax_1"):
                         first_ai_move = get_best_move(self.game, 5)
                     elif (self.game.first_ai == "minmax_2"):
-                        first_ai_move = get_best_move(self.game, 5, 
-                                                coin_parity_weight=0.5,
-                                                mobility_weight=3.0,
-                                                corner_occupancy_weight=7.0,
-                                                stability_weight=4.0,
-                                                edge_occupancy_weight=1.5
-                                                )
+                        first_ai_move = get_best_move(self.game, 5, True)
                     else: # (self.game.first_ai == "minmax_2"):
                         first_ai_move = get_best_move(self.game, 6)
                     pygame.time.delay(500)  # Wait for a short time to show the message
@@ -201,13 +189,7 @@ class OthelloGUI:
                     elif (self.game.first_ai == "minmax_1"):
                         second_ai_move = get_best_move(self.game, 5)
                     elif (self.game.first_ai == "minmax_2"):
-                        second_ai_move = get_best_move(self.game, 5, 
-                                                coin_parity_weight=0.5,
-                                                mobility_weight=3.0,
-                                                corner_occupancy_weight=7.0,
-                                                stability_weight=4.0,
-                                                edge_occupancy_weight=1.5
-                                                )
+                        second_ai_move = get_best_move(self.game, 5, True)
                     else: # (self.game.first_ai == "minmax_2"):
                         second_ai_move = get_best_move(self.game, 6)
                     pygame.time.delay(500)  # Wait for a short time to show the message
