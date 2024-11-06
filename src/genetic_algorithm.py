@@ -1,5 +1,4 @@
 from ai_agent import evaluate_game_state
-# from othello_game import OthelloGame
 import random
 import time
 import math

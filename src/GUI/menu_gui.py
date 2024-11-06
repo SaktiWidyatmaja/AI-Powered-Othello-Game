@@ -361,7 +361,7 @@ class Menu:
                                 self.first_ai = "minmax_3"
                                 self.draw_submenu_vs_ai_second_page()
                             elif button.text == "BOT 4\nLocal Search":
-                                self.first_ai = "local_seach"
+                                self.first_ai = "local_search"
                                 self.draw_submenu_vs_ai_second_page()
                             elif button.text == "BOT 5\nGenetic Algo":
                                 self.first_ai = "genetic"
@@ -390,35 +390,35 @@ class Menu:
                         if button.check_collision((x, y)):
                             if button.text == "BOT 1\nMinimax ver 1":
                                 self.second_ai = "minmax_1"
-                                othello_gui = OthelloGUI(player_mode="ai", first_ai=self.first_ai, second_ai=self.second_ai)
+                                othello_gui = OthelloGUI(player_mode="vsai", first_ai=self.first_ai, second_ai=self.second_ai)
                                 # Pass the draw_menu function as a callback to return to the main menu
                                 othello_gui.run_game(
                                     return_to_menu_callback=self.draw_menu
                                 )
                             elif button.text == "BOT 2\nMinimax ver 2":
                                 self.second_ai = "minmax_2"
-                                othello_gui = OthelloGUI(player_mode="ai", first_ai=self.first_ai, second_ai=self.second_ai)
+                                othello_gui = OthelloGUI(player_mode="vsai", first_ai=self.first_ai, second_ai=self.second_ai)
                                 # Pass the draw_menu function as a callback to return to the main menu
                                 othello_gui.run_game(
                                     return_to_menu_callback=self.draw_menu
                                 )
                             elif button.text == "BOT 3\nMinimax ver 3":
                                 self.second_ai = "minmax_3"
-                                othello_gui = OthelloGUI(player_mode="ai", first_ai=self.first_ai, second_ai=self.second_ai)
+                                othello_gui = OthelloGUI(player_mode="vsai", first_ai=self.first_ai, second_ai=self.second_ai)
                                 # Pass the draw_menu function as a callback to return to the main menu
                                 othello_gui.run_game(
                                     return_to_menu_callback=self.draw_menu
                                 )
                             elif button.text == "BOT 4\nLocal Search":
-                                self.second_ai = "local_seach"
-                                othello_gui = OthelloGUI(player_mode="ai", first_ai=self.first_ai, second_ai=self.second_ai)
+                                self.second_ai = "local_search"
+                                othello_gui = OthelloGUI(player_mode="vsai", first_ai=self.first_ai, second_ai=self.second_ai)
                                 # Pass the draw_menu function as a callback to return to the main menu
                                 othello_gui.run_game(
                                     return_to_menu_callback=self.draw_menu
                                 )
                             elif button.text == "BOT 5\nGenetic Algo":
                                 self.second_ai = "genetic"
-                                othello_gui = OthelloGUI(player_mode="ai", first_ai=self.first_ai, second_ai=self.second_ai)
+                                othello_gui = OthelloGUI(player_mode="vsai", first_ai=self.first_ai, second_ai=self.second_ai)
                                 # Pass the draw_menu function as a callback to return to the main menu
                                 othello_gui.run_game(
                                     return_to_menu_callback=self.draw_menu

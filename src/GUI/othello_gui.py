@@ -15,7 +15,8 @@ GREEN_COLOR = (0, 128, 0)
 
 
 class OthelloGUI:
-    def __init__(self, player_mode: str="friend", 
+    def __init__(self, 
+                 player_mode: str="friend", 
                  first_ai: str="genetic", 
                  second_ai: str="genetic"):
         """
@@ -141,22 +142,52 @@ class OthelloGUI:
         Run the main game loop until the game is over and display the result.
         """
         while not self.game.is_game_over():
-            self.handle_input()
+            if self.game.player_mode != "vsai":
+                self.handle_input()
 
-            # If it's the AI player's turn
-            if self.game.player_mode == "ai" and self.game.current_player == -1:
-                self.message = "AI is thinking..."
-                self.draw_board()  # Display the thinking message
-                if(self.game.first_ai == "genetic"):
-                    ai_move = get_best_move_genetic_algo(self.game)
-                elif (self.game.first_ai == "local_search"):
-                    ai_move = get_best_move_local_search(self.game)
-                elif (self.game.first_ai == "minmax_1"
-                      or self.game.first_ai == "minmax_2"
-                      or self.game.first_ai == "minmax_3"):
-                    ai_move = get_best_move(self.game)
-                pygame.time.delay(500)  # Wait for a short time to show the message
-                self.game.make_move(*ai_move)
+                # If it's the AI player's turn
+                if self.game.player_mode == "ai" and self.game.current_player == -1:
+                    self.message = f"AI ({self.game.first_ai}) is thinking..."
+                    self.draw_board()  # Display the thinking message
+                    if(self.game.first_ai == "genetic"):
+                        ai_move = get_best_move_genetic_algo(self.game)
+                    elif (self.game.first_ai == "local_search"):
+                        ai_move = get_best_move_local_search(self.game)
+                    elif (self.game.first_ai == "minmax_1"
+                        or self.game.first_ai == "minmax_2"
+                        or self.game.first_ai == "minmax_3"):
+                        ai_move = get_best_move(self.game)
+                    pygame.time.delay(500)  # Wait for a short time to show the message
+                    self.game.make_move(*ai_move)
+            
+            # If it's the AI vs AI
+            else:
+                if self.game.current_player == 1:
+                    self.message = f"AI ({self.game.first_ai}) is thinking..."
+                    self.draw_board()  # Display the thinking message
+                    if(self.game.first_ai == "genetic"):
+                        first_ai_move = get_best_move_genetic_algo(self.game)
+                    elif (self.game.first_ai == "local_search"):
+                        first_ai_move = get_best_move_local_search(self.game)
+                    elif (self.game.first_ai == "minmax_1"
+                        or self.game.first_ai == "minmax_2"
+                        or self.game.first_ai == "minmax_3"):
+                        first_ai_move = get_best_move(self.game)
+                    pygame.time.delay(500)  # Wait for a short time to show the message
+                    self.game.make_move(*first_ai_move)
+                elif self.game.current_player == -1:
+                    self.message = f"AI ({self.game.second_ai}) is thinking..."
+                    self.draw_board()  # Display the thinking message
+                    if(self.game.second_ai == "genetic"):
+                        second_ai_move = get_best_move_genetic_algo(self.game)
+                    elif (self.game.second_ai == "local_search"):
+                        second_ai_move = get_best_move_local_search(self.game)
+                    elif (self.game.second_ai == "minmax_1"
+                        or self.game.second_ai == "minmax_2"
+                        or self.game.second_ai == "minmax_3"):
+                        second_ai_move = get_best_move(self.game)
+                    pygame.time.delay(500)  # Wait for a short time to show the message
+                    self.game.make_move(*second_ai_move)
 
             self.message = ""  # Clear any previous messages
             self.draw_board()
