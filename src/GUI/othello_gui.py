@@ -3,7 +3,7 @@ import sys
 from genetic_algorithm import get_best_move_genetic_algo
 from local_search import get_best_move_local_search
 from othello_game import OthelloGame
-# from ai_agent import get_best_move
+from ai_agent import get_best_move
 
 # Constants and colors
 WIDTH, HEIGHT = 480, 560
@@ -15,7 +15,9 @@ GREEN_COLOR = (0, 128, 0)
 
 
 class OthelloGUI:
-    def __init__(self, player_mode="friend"):
+    def __init__(self, player_mode: str="friend", 
+                 first_ai: str="genetic", 
+                 second_ai: str="genetic"):
         """
         A graphical user interface (GUI) for playing the Othello game.
 
@@ -23,7 +25,7 @@ class OthelloGUI:
             player_mode (str): The mode of the game, either "friend" or "ai" (default is "friend").
         """
         self.win = self.initialize_pygame()
-        self.game = OthelloGame(player_mode=player_mode)
+        self.game = OthelloGame(player_mode=player_mode, first_ai=first_ai, second_ai=second_ai)
         self.message_font = pygame.font.SysFont(None, 24)
         self.message = ""
         self.invalid_move_message = ""
@@ -145,9 +147,14 @@ class OthelloGUI:
             if self.game.player_mode == "ai" and self.game.current_player == -1:
                 self.message = "AI is thinking..."
                 self.draw_board()  # Display the thinking message
-                ai_move = get_best_move_genetic_algo(self.game)
-                # ai_move = get_best_move_local_search(self.game)
-                # ai_move = get_best_move(self.game)
+                if(self.game.first_ai == "genetic"):
+                    ai_move = get_best_move_genetic_algo(self.game)
+                elif (self.game.first_ai == "local_search"):
+                    ai_move = get_best_move_local_search(self.game)
+                elif (self.game.first_ai == "minmax_1"
+                      or self.game.first_ai == "minmax_2"
+                      or self.game.first_ai == "minmax_3"):
+                    ai_move = get_best_move(self.game)
                 pygame.time.delay(500)  # Wait for a short time to show the message
                 self.game.make_move(*ai_move)
 

@@ -1,10 +1,16 @@
 class OthelloGame:
-    def __init__(self, player_mode="friend"):
+    def __init__(self, 
+                 player_mode: str="friend", 
+                 first_ai: str="genetic", 
+                 second_ai: str="genetic"):
         """
         A class representing the Othello game board and its rules.
 
         Args:
-            player_mode (str): The mode of the game, either "friend" or "ai" (default is "friend").
+            player_mode (str): The mode of the game, either "friend", "ai", or "vsai" (default is "friend").
+            first_ai (str): Selected ai for mode "ai" or first ai for "vsai"
+            second_ai (str): Selected ai for second ai
+            
         """
         self.board = [[0 for _ in range(8)] for _ in range(8)]
         self.board[3][3] = 1
@@ -13,6 +19,8 @@ class OthelloGame:
         self.board[4][4] = 1
         self.current_player = 1
         self.player_mode = player_mode
+        self.first_ai = first_ai
+        self.second_ai = second_ai
 
     def is_valid_move(self, row, col):
         """

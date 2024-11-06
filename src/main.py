@@ -1,4 +1,5 @@
-from GUI.menu_gui import run_menu
+from GUI.menu_gui import Menu
 
 if __name__ == "__main__":
-    run_menu()
+    menu = Menu()
+    menu.draw_menu()

@@ -30,13 +30,26 @@ class Menu:
         self.submenu_items = [
             "Multi-player\n(Play with Friend)",
             "Single-player\n(Play with AI)",
-            "Return to Main Menu",  # Add "Return to Main Menu" option
+            "Adu Domba\n(AI vs AI)",
+            "Return to Main Menu",
+        ]
+        self.submenu_play_with_ai_items = [
+            "BOT 1\nMinimax ver 1",
+            "BOT 2\nMinimax ver 2",
+            "BOT 3\nMinimax ver 3",
+            "BOT 4\nLocal Search",
+            "BOT 5\nGenetic Algo",
+            "Return to Main Menu"
+
         ]
         self.return_button = None
         self.background_image = pygame.image.load(BACKGROUND_IMAGE_PATH)
         self.background_image = pygame.transform.scale(
             self.background_image, (WIDTH, HEIGHT)
         )
+
+        self.first_ai = ""
+        self.second_ai = ""
 
     def initialize_pygame(self):
         """
@@ -88,6 +101,72 @@ class Menu:
 
         pygame.display.update()
         self.handle_input_submenu(buttons)
+
+    def draw_submenu_with_ai(self):
+        """
+        Draw the submenu play with ai on the Pygame window.
+        """
+        self.win.blit(self.background_image, (0, 0))  # Draw the background image
+
+        buttons = []
+        num_submenu_items = len(self.submenu_play_with_ai_items)
+        submenu_height = num_submenu_items * SUBMENU_SPACING
+        submenu_top_margin = (HEIGHT - submenu_height) // 2
+
+        for i, item in enumerate(self.submenu_play_with_ai_items):
+            button_y = submenu_top_margin + i * SUBMENU_SPACING
+            button = Button(
+                WIDTH // 2, button_y, 200, 30, item, self.menu_font
+            )  # Adjust height to 30
+            buttons.append(button)
+            button.draw(self.win)
+
+        pygame.display.update()
+        self.handle_input_submenu_play_with_ai(buttons)
+
+    def draw_submenu_vs_ai_first_page(self):
+        """
+        Draw the submenu play with ai on the Pygame window.
+        """
+        self.win.blit(self.background_image, (0, 0))  # Draw the background image
+
+        buttons = []
+        num_submenu_items = len(self.submenu_play_with_ai_items)
+        submenu_height = num_submenu_items * SUBMENU_SPACING
+        submenu_top_margin = (HEIGHT - submenu_height) // 2
+
+        for i, item in enumerate(self.submenu_play_with_ai_items):
+            button_y = submenu_top_margin + i * SUBMENU_SPACING
+            button = Button(
+                WIDTH // 2, button_y, 200, 30, item, self.menu_font
+            )  # Adjust height to 30
+            buttons.append(button)
+            button.draw(self.win)
+
+        pygame.display.update()
+        self.handle_input_submenu_play_vs_ai_first_page(buttons)
+    
+    def draw_submenu_vs_ai_second_page(self):
+        """
+        Draw the submenu play with ai on the Pygame window.
+        """
+        self.win.blit(self.background_image, (0, 0))  # Draw the background image
+
+        buttons = []
+        num_submenu_items = len(self.submenu_play_with_ai_items)
+        submenu_height = num_submenu_items * SUBMENU_SPACING
+        submenu_top_margin = (HEIGHT - submenu_height) // 2
+
+        for i, item in enumerate(self.submenu_play_with_ai_items):
+            button_y = submenu_top_margin + i * SUBMENU_SPACING
+            button = Button(
+                WIDTH // 2, button_y, 200, 30, item, self.menu_font
+            )  # Adjust height to 30
+            buttons.append(button)
+            button.draw(self.win)
+
+        pygame.display.update()
+        self.handle_input_submenu_play_vs_ai_second_page(buttons)
 
     def draw_credit(self):
         """
@@ -197,13 +276,156 @@ class Menu:
                                 )
 
                             elif button.text == "Single-player\n(Play with AI)":
-                                othello_gui = OthelloGUI(player_mode="ai")
+                                self.draw_submenu_with_ai()
+                            
+                            elif button.text == "Adu Domba\n(AI vs AI)":
+                                self.draw_submenu_vs_ai_first_page()
+
+                            elif button.text == "Return to Main Menu":
+                                self.draw_menu()  # Go back to the main menu
+
+    def handle_input_submenu_play_with_ai(self, buttons):
+        """
+        Handle input events for the submenu.
+
+        Parameters:
+            buttons (list): The list of buttons in the submenu.
+        """
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    for button in buttons:
+                        if button.check_collision((x, y)):
+                            if button.text == "BOT 1\nMinimax ver 1":
+                                othello_gui = OthelloGUI(player_mode="ai", first_ai="minmax_1")
                                 # Pass the draw_menu function as a callback to return to the main menu
                                 othello_gui.run_game(
                                     return_to_menu_callback=self.draw_menu
                                 )
-
+                            elif button.text == "BOT 2\nMinimax ver 2":
+                                othello_gui = OthelloGUI(player_mode="ai",first_ai="minmax_2")
+                                # Pass the draw_menu function as a callback to return to the main menu
+                                othello_gui.run_game(
+                                    return_to_menu_callback=self.draw_menu
+                                )
+                            elif button.text == "BOT 3\nMinimax ver 3":
+                                othello_gui = OthelloGUI(player_mode="ai", first_ai="minmax_3")
+                                # Pass the draw_menu function as a callback to return to the main menu
+                                othello_gui.run_game(
+                                    return_to_menu_callback=self.draw_menu
+                                )
+                            elif button.text == "BOT 4\nLocal Search":
+                                othello_gui = OthelloGUI(player_mode="ai", first_ai="local_search")
+                                # Pass the draw_menu function as a callback to return to the main menu
+                                othello_gui.run_game(
+                                    return_to_menu_callback=self.draw_menu
+                                )
+                            elif button.text == "BOT 5\nGenetic Algo":
+                                othello_gui = OthelloGUI(player_mode="ai", first_ai="genetic")
+                                # Pass the draw_menu function as a callback to return to the main menu
+                                othello_gui.run_game(
+                                    return_to_menu_callback=self.draw_menu
+                                )
                             elif button.text == "Return to Main Menu":
+                                self.draw_menu()  # Go back to the main menu
+    
+    def handle_input_submenu_play_vs_ai_first_page(self, buttons):
+        """
+        Handle input events for the submenu.
+
+        Parameters:
+            buttons (list): The list of buttons in the submenu.
+        """
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    for button in buttons:
+                        if button.check_collision((x, y)):
+                            if button.text == "BOT 1\nMinimax ver 1":
+                                self.first_ai = "minmax_1"
+                                self.draw_submenu_vs_ai_second_page()
+                            elif button.text == "BOT 2\nMinimax ver 2":
+                                self.first_ai = "minmax_2"
+                                self.draw_submenu_vs_ai_second_page()
+                            elif button.text == "BOT 3\nMinimax ver 3":
+                                self.first_ai = "minmax_3"
+                                self.draw_submenu_vs_ai_second_page()
+                            elif button.text == "BOT 4\nLocal Search":
+                                self.first_ai = "local_seach"
+                                self.draw_submenu_vs_ai_second_page()
+                            elif button.text == "BOT 5\nGenetic Algo":
+                                self.first_ai = "genetic"
+                                self.draw_submenu_vs_ai_second_page()
+                            elif button.text == "Return to Main Menu":
+                                self.second_ai = ""
+                                self.first_ai = ""
+                                self.draw_menu()  # Go back to the main menu
+    
+    def handle_input_submenu_play_vs_ai_second_page(self, buttons):
+        """
+        Handle input events for the submenu.
+
+        Parameters:
+            buttons (list): The list of buttons in the submenu.
+        """
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    for button in buttons:
+                        if button.check_collision((x, y)):
+                            if button.text == "BOT 1\nMinimax ver 1":
+                                self.second_ai = "minmax_1"
+                                othello_gui = OthelloGUI(player_mode="ai", first_ai=self.first_ai, second_ai=self.second_ai)
+                                # Pass the draw_menu function as a callback to return to the main menu
+                                othello_gui.run_game(
+                                    return_to_menu_callback=self.draw_menu
+                                )
+                            elif button.text == "BOT 2\nMinimax ver 2":
+                                self.second_ai = "minmax_2"
+                                othello_gui = OthelloGUI(player_mode="ai", first_ai=self.first_ai, second_ai=self.second_ai)
+                                # Pass the draw_menu function as a callback to return to the main menu
+                                othello_gui.run_game(
+                                    return_to_menu_callback=self.draw_menu
+                                )
+                            elif button.text == "BOT 3\nMinimax ver 3":
+                                self.second_ai = "minmax_3"
+                                othello_gui = OthelloGUI(player_mode="ai", first_ai=self.first_ai, second_ai=self.second_ai)
+                                # Pass the draw_menu function as a callback to return to the main menu
+                                othello_gui.run_game(
+                                    return_to_menu_callback=self.draw_menu
+                                )
+                            elif button.text == "BOT 4\nLocal Search":
+                                self.second_ai = "local_seach"
+                                othello_gui = OthelloGUI(player_mode="ai", first_ai=self.first_ai, second_ai=self.second_ai)
+                                # Pass the draw_menu function as a callback to return to the main menu
+                                othello_gui.run_game(
+                                    return_to_menu_callback=self.draw_menu
+                                )
+                            elif button.text == "BOT 5\nGenetic Algo":
+                                self.second_ai = "genetic"
+                                othello_gui = OthelloGUI(player_mode="ai", first_ai=self.first_ai, second_ai=self.second_ai)
+                                # Pass the draw_menu function as a callback to return to the main menu
+                                othello_gui.run_game(
+                                    return_to_menu_callback=self.draw_menu
+                                )
+                            elif button.text == "Return to Main Menu":
+                                self.second_ai = ""
+                                self.first_ai = ""
                                 self.draw_menu()  # Go back to the main menu
 
     def run_single_player_game(self):
@@ -241,11 +463,3 @@ class Menu:
             sys.exit()
         else:
             action()
-
-
-def run_menu():
-    """
-    Start the main menu of the Othello game.
-    """
-    menu = Menu()
-    menu.draw_menu()
