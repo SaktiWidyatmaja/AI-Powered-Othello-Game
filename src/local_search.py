@@ -1,5 +1,6 @@
 from ai_agent import evaluate_game_state
 import time
+import random
 
 def get_best_move_local_search(game, max_time=5):
     """
@@ -24,5 +25,8 @@ def get_best_move_local_search(game, max_time=5):
 
         if time.time() - start_time >= max_time:
             break
+    
+    if best_move == None:
+        best_move = random.choice(valid_moves)
 
     return best_move
