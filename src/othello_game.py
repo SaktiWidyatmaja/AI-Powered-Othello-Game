@@ -152,3 +152,9 @@ class OthelloGame:
                 if self.is_valid_move(row, col):
                     valid_moves.append((row, col))
         return valid_moves
+
+    def copy(self): 
+        copied_game = OthelloGame(self.player_mode)
+        copied_game.board = [row[:] for row in self.board]
+        copied_game.current_player = self.current_player
+        return copied_game
